@@ -2,199 +2,247 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Benjamin’s Portal</title>
     <style>
         :root {
-            --bg-color: #f9f8f4; /* 傳統和紙色 */
-            --text-main: #333333; /* 墨灰色 */
-            --text-dim: #888888;
-            --accent: #a68d71; /* 橡木色 / 灰褐色 */
-            --border: #e0ddd5;
-            --transition-speed: 0.6s;
+            --ios-bg: #f2f2f7; /* iOS 系統淺色底 */
+            --folder-bg: rgba(255, 255, 255, 0.7);
+            --icon-bg: #ffffff;
+            --text-main: #000000;
+            --text-label: #3a3a3c;
+            --accent: #007aff; /* iOS Blue */
+            --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: "Helvetica Neue", "Helvetica", "Nimbus Sans L", Arial, "Liberation Sans", "PingFang HK", "Hiragino Sans GB", "Source Han Sans TC", "Microsoft JhengHei", sans-serif;
-            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Icons", "Helvetica Neue", sans-serif;
+            background-color: var(--ios-bg);
+            background-image: linear-gradient(180deg, #e5e5ea 0%, #f2f2f7 100%);
             color: var(--text-main);
             margin: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
+            overflow: hidden;
         }
 
-        /* 裝飾性線條 - 模仿屏風或日式建築 */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 50%;
-            width: 1px;
-            height: 100%;
-            background-color: var(--border);
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        .container {
-            width: 85%;
-            max-width: 400px;
-            padding: 100px 0;
+        .iphone-screen {
+            width: 100%;
+            max-width: 414px; /* iPhone Plus/Max 寬度 */
+            padding: 60px 20px;
             position: relative;
         }
 
+        /* 標題 */
         h1 {
-            font-size: 1.2rem;
-            font-weight: 300;
-            letter-spacing: 0.2rem;
-            text-align: center;
-            margin-bottom: 80px;
-            color: var(--text-main);
-            border-bottom: 1px solid var(--accent);
-            display: inline-block;
-            left: 50%;
-            position: relative;
-            transform: translateX(-50%);
-            padding-bottom: 10px;
+            font-size: 2.1rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 40px;
+            padding-left: 10px;
         }
 
-        /* Dissolve (溶解) 切換 */
+        /* 頁面切換 (Dissolve) */
         .page {
             position: absolute;
-            top: 100px;
-            left: 0;
-            right: 0;
+            top: 60px;
+            left: 20px;
+            right: 20px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity var(--transition-speed) ease-in-out;
-            pointer-events: none;
+            transition: opacity var(--transition), transform var(--transition);
+            transform: scale(0.95);
         }
 
         .page.active {
             position: relative;
             top: 0;
+            left: 0;
+            right: 0;
             opacity: 1;
             visibility: visible;
-            pointer-events: auto;
+            transform: scale(1);
         }
 
-        .back-btn {
-            display: block;
-            text-align: center;
-            color: var(--text-dim);
-            text-decoration: none;
+        /* Home Screen Grid */
+        .home-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px 15px;
+            justify-items: center;
+        }
+
+        /* Folder/Icon 樣式 */
+        .folder {
+            width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .folder-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--folder-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 18px; /* iOS Squircle 效果 */
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            padding: 10px;
+            transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* Folder 內的小格 */
+        .mini-dot {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .folder:active .folder-icon {
+            transform: scale(0.9);
+        }
+
+        .label {
+            margin-top: 8px;
             font-size: 0.75rem;
-            letter-spacing: 0.1rem;
-            margin-bottom: 50px;
-            cursor: pointer;
-            transition: 0.3s;
+            font-weight: 500;
+            color: var(--text-label);
         }
-        .back-btn:hover { color: var(--accent); }
 
-        .grid { display: grid; gap: 20px; }
+        /* 列表頁面 (List Style) */
+        .ios-list {
+            background: var(--icon-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
 
-        /* 按鈕樣式：極簡線條 */
-        .btn {
+        .ios-item {
+            border-bottom: 0.5px solid #c6c6c8;
             display: block;
-            padding: 20px;
-            background: transparent;
-            color: var(--text-main);
+            padding: 14px 16px;
             text-decoration: none;
-            border: 1px solid var(--border);
-            font-size: 0.9rem;
-            font-weight: 400;
-            text-align: center;
-            transition: all 0.4s ease;
+            color: var(--text-main);
+            font-size: 1.05rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .ios-item:last-child { border-bottom: none; }
+        .ios-item:active { background: #e5e5ea; }
+
+        .ios-item::after {
+            content: "〉";
+            color: #c4c4c6;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .back-nav {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: inline-block;
+            margin-bottom: 20px;
             cursor: pointer;
-            outline: none;
-        }
-
-        /* Hover 效果：輕微變色與位移 */
-        .btn:hover {
-            border-color: var(--accent);
-            background-color: #ffffff;
-            letter-spacing: 1px;
-        }
-
-        /* 撳掣瞬間反應：縮小與壓感 */
-        .btn:active {
-            transform: scale(0.98);
-            background-color: #f2f0e9;
-        }
-
-        .btn-tool {
-            border-style: solid;
-            opacity: 0.4;
-            font-style: italic;
         }
 
         footer {
-            margin-top: 120px;
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
             text-align: center;
-            font-size: 0.65rem;
-            color: var(--text-dim);
-            letter-spacing: 0.2rem;
-            text-transform: uppercase;
+            font-size: 0.7rem;
+            color: #8e8e93;
+            left: 0;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="iphone-screen">
 
     <div id="home" class="page active">
-        <h1>BENJAMIN'S PORTAL</h1>
-        <div class="grid">
-            <div class="btn" onclick="showPage('ven1101')">VEN1101</div>
-            <div class="btn" onclick="showPage('ven2101')">VEN2101</div>
-            <div class="btn" onclick="showPage('digital-tools')">DIGITAL TOOLS</div>
+        <h1>Portal</h1>
+        <div class="home-grid">
+            <div class="folder" onclick="showPage('ven1101')">
+                <div class="folder-icon">
+                    <div class="mini-dot"></div><div class="mini-dot"></div>
+                    <div class="mini-dot"></div><div class="mini-dot"></div>
+                </div>
+                <div class="label">VEN1101</div>
+            </div>
+
+            <div class="folder" onclick="showPage('ven2101')">
+                <div class="folder-icon" style="background: rgba(52, 199, 89, 0.1);">
+                    <div class="mini-dot" style="background: rgba(52, 199, 89, 0.2);"></div><div class="mini-dot"></div>
+                    <div class="mini-dot"></div><div class="mini-dot"></div>
+                </div>
+                <div class="label">VEN2101</div>
+            </div>
+
+            <div class="folder" onclick="showPage('digital-tools')">
+                <div class="folder-icon" style="background: rgba(255, 149, 0, 0.1);">
+                    <div class="mini-dot" style="background: rgba(255, 149, 0, 0.2);"></div><div class="mini-dot"></div>
+                    <div class="mini-dot"></div><div class="mini-dot"></div>
+                </div>
+                <div class="label">Digital Tools</div>
+            </div>
         </div>
     </div>
 
     <div id="ven1101" class="page">
-        <div class="back-btn" onclick="showPage('home')">戻る / BACK</div>
+        <div class="back-nav" onclick="showPage('home')">◀ Portal</div>
         <h1>VEN1101</h1>
-        <div class="grid">
-            <a href="https://benjaminl-ai.github.io/pronunciation/" class="btn" target="_blank">AI Speaking Coach</a>
-            <a href="https://benjaminl-ai.github.io/ven1101ta/" class="btn" target="_blank">TA Challenge (Revision Package)</a>
-            <a href="https://benjaminl-ai.github.io/ven1101ta-rev/" class="btn" target="_blank">TA Game Boy (Action Verbs)</a>
-            <a href="https://benjaminl-ai.github.io/ven1101prep-bse/" class="btn" target="_blank">TA Prep Task Helper - BSE</a>
-            <a href="https://benjaminl-ai.github.io/ven1101taprep/" class="btn" target="_blank">TA Prep Task Helper - Fashion</a>
+        <div class="ios-list">
+            <a href="https://benjaminl-ai.github.io/pronunciation/" class="ios-item" target="_blank">AI Speaking Coach</a>
+            <a href="https://benjaminl-ai.github.io/ven1101ta/" class="ios-item" target="_blank">TA Challenge (Revision Package)</a>
+            <a href="https://benjaminl-ai.github.io/ven1101ta-rev/" class="ios-item" target="_blank">TA Game Boy (Action Verbs)</a>
+            <a href="https://benjaminl-ai.github.io/ven1101prep-bse/" class="ios-item" target="_blank">TA Prep Task Helper - BSE</a>
+            <a href="https://benjaminl-ai.github.io/ven1101taprep/" class="ios-item" target="_blank">TA Prep Task Helper - Fashion</a>
         </div>
     </div>
 
     <div id="ven2101" class="page">
-        <div class="back-btn" onclick="showPage('home')">戻る / BACK</div>
+        <div class="back-nav" onclick="showPage('home')">◀ Portal</div>
         <h1>VEN2101</h1>
-        <div class="grid">
-            <a href="https://benjaminl-ai.github.io/pronunciation/" class="btn" target="_blank">AI Speaking Coach</a>
-            <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="btn" target="_blank">Vocab Shooting Game (TA Vocab List)</a>
-            <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="btn" target="_blank">TA Prep Task Helper</a>
+        <div class="ios-list">
+            <a href="https://benjaminl-ai.github.io/pronunciation/" class="ios-item" target="_blank">AI Speaking Coach</a>
+            <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="ios-item" target="_blank">Vocab Shooting Game (TA Vocab List)</a>
+            <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="ios-item" target="_blank">TA Prep Task Helper</a>
         </div>
     </div>
 
     <div id="digital-tools" class="page">
-        <div class="back-btn" onclick="showPage('home')">戻る / BACK</div>
-        <h1>DIGITAL TOOLS</h1>
-        <div class="grid">
-            <div class="btn btn-tool" onclick="alert('Coming soon')">Assessment Timer</div>
-            <div class="btn btn-tool" onclick="alert('Coming soon')">VEN1101 TA scheduler</div>
-            <div class="btn btn-tool" onclick="alert('Coming soon')">File Renamer</div>
-            <div class="btn btn-tool" onclick="alert('Coming soon')">Cover Source (for assessment arrangement)</div>
+        <div class="back-nav" onclick="showPage('home')">◀ Portal</div>
+        <h1>Digital Tools</h1>
+        <div class="ios-list">
+            <div class="ios-item" style="color:#8e8e93" onclick="alert('Coming soon')">Assessment Timer</div>
+            <div class="ios-item" style="color:#8e8e93" onclick="alert('Coming soon')">VEN1101 TA scheduler</div>
+            <div class="ios-item" style="color:#8e8e93" onclick="alert('Coming soon')">File Renamer</div>
+            <div class="ios-item" style="color:#8e8e93" onclick="alert('Coming soon')">Cover Source (for assessment arrangement)</div>
         </div>
     </div>
 
-    <footer>— SINCE 2026 —</footer>
+    <footer>Benjamin's Portal v2.6</footer>
 </div>
 
 <script>
     function showPage(pageId) {
         const pages = document.querySelectorAll('.page');
-        pages.forEach(p => {
-            p.classList.remove('active');
-        });
+        pages.forEach(p => p.classList.remove('active'));
         
         setTimeout(() => {
             const target = document.getElementById(pageId);
