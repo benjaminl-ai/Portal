@@ -6,8 +6,7 @@
     <title>Benjamin’s Portal</title>
     <style>
         :root {
-            --ios-radius: 20px;
-            --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
+            --ios-radius: 18px;
             --folder-bg: rgba(255, 255, 255, 0.25);
             --blur: blur(30px);
         }
@@ -15,16 +14,13 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            font-family: var(--ios-font);
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             overflow: hidden;
             background: #000;
         }
 
-        /* 經典 iPhone 抽象流體背景 */
+        /* iPhone 抽象流體背景 */
         .wallpaper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -40,25 +36,16 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* 頂部狀態欄模擬 */
         .status-bar {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 30px;
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
+            display: flex; justify-content: space-between;
+            padding: 12px 30px; color: white; font-size: 14px; font-weight: 600;
         }
 
-        .container {
-            padding: 20px;
-            text-align: left;
-        }
+        .container { padding: 20px; }
 
         h1 {
-            color: white;
-            font-size: 34px;
-            margin: 40px 0 30px 10px;
+            color: white; font-size: 34px; font-weight: 700;
+            margin: 30px 0 30px 10px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
@@ -70,114 +57,65 @@
         }
 
         .item-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            cursor: pointer;
+            display: flex; flex-direction: column; align-items: center;
+            text-decoration: none; cursor: pointer;
         }
 
-        /* Folder 與 App Icon 共用形狀 */
         .icon-shape {
-            width: 70px;
-            height: 70px;
-            border-radius: var(--ios-radius);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 70px; height: 70px; border-radius: var(--ios-radius);
+            display: flex; justify-content: center; align-items: center;
             transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
-            position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        /* Folder 特有樣式 */
         .folder-icon {
             background: var(--folder-bg);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            padding: 8px;
-            gap: 4px;
+            backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            padding: 10px; gap: 4px;
         }
 
-        .mini-dot {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 5px;
-            aspect-ratio: 1;
-        }
+        .mini-dot { background: rgba(255, 255, 255, 0.5); border-radius: 4px; aspect-ratio: 1; }
 
         .label {
-            margin-top: 8px;
-            font-size: 12px;
-            color: white;
-            font-weight: 500;
-            text-align: center;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            margin-top: 6px; font-size: 11px; color: white; font-weight: 400;
+            text-align: center; width: 80px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+            line-height: 1.2;
         }
 
         .item-wrapper:active .icon-shape { transform: scale(0.85); }
 
-        /* Folder 開啟後的遮罩頁面 */
+        /* Folder 展開視圖 */
         .folder-view {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 100px;
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+            display: none; flex-direction: column; align-items: center;
+            padding-top: 100px; z-index: 100; opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        .folder-view.active {
-            display: flex;
-            opacity: 1;
-        }
+        .folder-view.active { display: flex; opacity: 1; }
 
         .folder-content {
             background: rgba(255, 255, 255, 0.2);
-            padding: 25px;
-            border-radius: 35px;
-            width: 85%;
-            max-width: 320px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px 15px;
+            padding: 25px; border-radius: 30px;
+            width: 85%; max-width: 320px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px 15px;
         }
 
-        .folder-title {
-            color: white;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
+        .folder-title { color: white; font-size: 26px; font-weight: 600; margin-bottom: 25px; }
 
-        /* App Icon 顏色設計 */
         .app-icon {
-            background: linear-gradient(135deg, #fff 0%, #ddd 100%);
-            color: #333;
-            font-weight: bold;
-            font-size: 10px;
-            text-align: center;
-            padding: 5px;
-            word-break: break-all;
+            color: white; font-weight: 800; font-size: 18px; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
-        /* 不同課程的 Icon 漸變 */
-        .icon-v1 { background: linear-gradient(135deg, #5AC8FA 0%, #007AFF 100%); color: white; }
-        .icon-v2 { background: linear-gradient(135deg, #4CD964 0%, #28CD41 100%); color: white; }
-        .icon-tool { background: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%); color: white; }
+        .icon-v1 { background: linear-gradient(135deg, #5AC8FA 0%, #007AFF 100%); }
+        .icon-v2 { background: linear-gradient(135deg, #4CD964 0%, #28CD41 100%); }
+        .icon-tool { background: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%); }
 
-        .close-area {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-        }
+        .close-area { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
     </style>
 </head>
 <body>
@@ -225,24 +163,24 @@
     <div class="folder-title">VEN1101</div>
     <div class="folder-content" onclick="event.stopPropagation()">
         <a href="https://benjaminl-ai.github.io/pronunciation/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v1">Coach</div>
-            <div class="label">AI Speaking</div>
+            <div class="icon-shape app-icon icon-v1">AI</div>
+            <div class="label">AI Speaking Coach</div>
         </a>
         <a href="https://benjaminl-ai.github.io/ven1101ta/" class="item-wrapper" target="_blank">
             <div class="icon-shape app-icon icon-v1">TA</div>
-            <div class="label">Revision</div>
+            <div class="label">TA Challenge (Revision Package)</div>
         </a>
         <a href="https://benjaminl-ai.github.io/ven1101ta-rev/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v1">Game</div>
-            <div class="label">Verbs</div>
+            <div class="icon-shape app-icon icon-v1">GB</div>
+            <div class="label">TA Game Boy (Action Verbs)</div>
         </a>
         <a href="https://benjaminl-ai.github.io/ven1101prep-bse/" class="item-wrapper" target="_blank">
             <div class="icon-shape app-icon icon-v1">BSE</div>
-            <div class="label">Prep</div>
+            <div class="label">TA Prep Task Helper - BSE</div>
         </a>
         <a href="https://benjaminl-ai.github.io/ven1101taprep/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v1">Fashion</div>
-            <div class="label">Prep</div>
+            <div class="icon-shape app-icon icon-v1">FSH</div>
+            <div class="label">TA Prep Task Helper - Fashion</div>
         </a>
     </div>
 </div>
@@ -252,16 +190,16 @@
     <div class="folder-title">VEN2101</div>
     <div class="folder-content" onclick="event.stopPropagation()">
         <a href="https://benjaminl-ai.github.io/pronunciation/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v2">Coach</div>
-            <div class="label">AI Speaking</div>
+            <div class="icon-shape app-icon icon-v2">AI</div>
+            <div class="label">AI Speaking Coach</div>
         </a>
         <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v2">Shooting</div>
-            <div class="label">Vocab Game</div>
+            <div class="icon-shape app-icon icon-v2">VG</div>
+            <div class="label">Vocab Shooting Game (TA Vocab List)</div>
         </a>
         <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v2">Prep</div>
-            <div class="label">Helper</div>
+            <div class="icon-shape app-icon icon-v2">TA</div>
+            <div class="label">TA Prep Task Helper</div>
         </a>
     </div>
 </div>
@@ -271,39 +209,36 @@
     <div class="folder-title">Digital Tools</div>
     <div class="folder-content" onclick="event.stopPropagation()">
         <div class="item-wrapper" onclick="alert('Coming soon')">
-            <div class="icon-shape app-icon icon-tool">Timer</div>
-            <div class="label">Timer</div>
+            <div class="icon-shape app-icon icon-tool">TM</div>
+            <div class="label">Assessment Timer</div>
         </div>
         <div class="item-wrapper" onclick="alert('Coming soon')">
-            <div class="icon-shape app-icon icon-tool">Schedule</div>
-            <div class="label">Scheduler</div>
+            <div class="icon-shape app-icon icon-tool">SC</div>
+            <div class="label">VEN1101 TA scheduler</div>
         </div>
         <div class="item-wrapper" onclick="alert('Coming soon')">
-            <div class="icon-shape app-icon icon-tool">Rename</div>
-            <div class="label">Renamer</div>
-        </div>
+            <div class="icon-shape app-icon icon-tool">RN</div>
+            <div class="label">File Renamer</div>
+        </a>
         <div class="item-wrapper" onclick="alert('Coming soon')">
-            <div class="icon-shape app-icon icon-tool">Source</div>
-            <div class="label">Cover</div>
+            <div class="icon-shape app-icon icon-tool">CS</div>
+            <div class="label">Cover Source (for assessment arrangement)</div>
         </div>
     </div>
 </div>
 
 <script>
     function openFolder(id) {
-        document.getElementById(id).style.display = 'flex';
-        setTimeout(() => {
-            document.getElementById(id).classList.add('active');
-        }, 10);
+        const el = document.getElementById(id);
+        el.style.display = 'flex';
+        setTimeout(() => el.classList.add('active'), 10);
     }
 
     function closeFolder() {
         const folders = document.querySelectorAll('.folder-view');
         folders.forEach(f => {
             f.classList.remove('active');
-            setTimeout(() => {
-                f.style.display = 'none';
-            }, 300);
+            setTimeout(() => f.style.display = 'none', 400);
         });
     }
 </script>
