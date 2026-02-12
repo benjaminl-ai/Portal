@@ -4,337 +4,178 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Benjamin’s Portal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Variables for easier theme changes */
         :root {
-            --bg-color: #eef1f6; /* Lightest background */
-            --header-bg: linear-gradient(135deg, #4CAF50, #2E8B57); /* Header gradient */
-            --header-text: #ffffff;
-            --primary-text: #2c3e50;
-            --secondary-text: #607d8b;
-            --card-bg: #ffffff;
-            --card-border: #e0e0e0;
-            --ven1101-accent: #3498db; /* Blue */
-            --ven2101-accent: #2ecc71; /* Green */
-            --digital-accent: #95a5a6; /* Grey */
-            --shadow-light: rgba(0, 0, 0, 0.08);
-            --shadow-hover: rgba(0, 0, 0, 0.15);
+            --bg-dark: #0f172a; /* 深藍黑底色 */
+            --card-bg: rgba(30, 41, 59, 0.7); /* 半透明深灰色 */
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --text-main: #f1f5f9;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
         }
 
-        /* Base Styles */
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             margin: 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align to top for longer content */
             min-height: 100vh;
-            padding: 0;
+            overflow-x: hidden;
         }
 
-        .portal-wrapper {
-            width: 100%;
-            max-width: 800px; /* Wider container for better layout */
-            background-color: var(--card-bg);
-            box-shadow: 0 10px 30px var(--shadow-light);
-            border-radius: 15px;
-            overflow: hidden; /* For header gradient to stay within bounds */
-            margin: 30px 20px; /* Margin for mobile view */
+        /* 科技感背景裝飾 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 70%);
+            z-index: -1;
         }
 
-        /* Header */
-        header {
-            background: var(--header-bg);
-            padding: 60px 20px;
+        .container {
+            width: 90%;
+            max-width: 500px;
+            padding: 60px 0;
             text-align: center;
-            color: var(--header-text);
-            position: relative;
-            overflow: hidden; /* For background pattern */
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 2.8rem;
+        h1 {
+            font-size: 2rem;
             font-weight: 700;
-            letter-spacing: 1.5px;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1; /* Above any background patterns */
+            letter-spacing: -0.5px;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, #fff, var(--text-dim));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        header p {
-            font-size: 1.1rem;
-            margin-top: 10px;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Background pattern for header (unique touch) */
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.1;
-            z-index: 0;
-        }
-
-        /* Main Content Area */
-        .content-area {
-            padding: 30px;
-        }
-
-        /* Page Management (JavaScript driven) */
+        /* 頁面切換控制 */
         .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.4s ease-out; }
+        .page.active { display: block; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Back Button */
         .back-btn {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            margin-bottom: 25px;
-            color: var(--secondary-text);
+            color: var(--accent-blue);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-            cursor: pointer;
-        }
-        .back-btn:hover { color: var(--primary-text); }
-        .back-btn svg { margin-right: 8px; }
-
-        /* Button Grid Layout */
-        .button-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Responsive grid */
-            gap: 20px;
-        }
-
-        /* Card/Button Styles */
-        .card-btn {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 25px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            text-decoration: none;
-            color: var(--primary-text);
-            box-shadow: 0 4px 15px var(--shadow-light);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .card-btn:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px var(--shadow-hover);
-            border-color: var(--accent); /* Default hover color */
-        }
-
-        /* Specific accent colors for main buttons */
-        .card-btn.ven1101:hover { border-color: var(--ven1101-accent); }
-        .card-btn.ven2101:hover { border-color: var(--ven2101-accent); }
-        .card-btn.digital-tools:hover { border-color: var(--digital-accent); }
-
-
-        .card-btn h2, .card-btn h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--primary-text);
-            transition: color 0.2s;
-        }
-        
-        /* Change title color on hover */
-        .card-btn.ven1101:hover h2 { color: var(--ven1101-accent); }
-        .card-btn.ven2101:hover h2 { color: var(--ven2101-accent); }
-        .card-btn.digital-tools:hover h2 { color: var(--digital-accent); }
-
-        .card-btn p {
             font-size: 0.9rem;
-            color: var(--secondary-text);
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        /* Specific header colors for sub-pages */
-        .page h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-top: 0;
             margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--card-border);
-            color: var(--primary-text);
-            text-align: center;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: 0.3s;
+        }
+        .back-btn:hover { opacity: 1; letter-spacing: 0.5px; }
+
+        /* 按鈕矩陣 */
+        .grid { display: grid; gap: 16px; }
+
+        .btn {
+            display: block;
+            padding: 22px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-weight: 500;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
         }
 
-        /* Digital Tools specific styling */
-        .card-btn.disabled {
-            background-color: #f7f7f7;
+        /* Hover 效果：邊框發光 */
+        .btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+        }
+
+        /* 不同 Section 的色彩主題 */
+        .btn-ven2101:hover { border-color: var(--accent-green); box-shadow: 0 0 20px rgba(16, 185, 129, 0.15); color: var(--accent-green); }
+        .btn-ven1101:hover { color: var(--accent-blue); }
+        
+        .btn-tool {
             border-style: dashed;
-            opacity: 0.7;
-            cursor: not-allowed;
-            color: var(--secondary-text);
+            opacity: 0.6;
         }
-        .card-btn.disabled:hover {
-            transform: none;
-            box-shadow: 0 4px 15px var(--shadow-light);
-            border-color: var(--card-border);
-        }
-        .card-btn.disabled h3 {
-            color: var(--secondary-text);
-        }
+        .btn-tool:hover { border-style: solid; opacity: 1; }
 
-        /* Responsive Adjustments */
-        @media (max-width: 600px) {
-            .portal-wrapper { margin: 15px; }
-            header { padding: 40px 15px; }
-            header h1 { font-size: 2.2rem; }
-            header p { font-size: 1rem; }
-            .content-area { padding: 20px; }
-            .button-grid { grid-template-columns: 1fr; }
-            .page h2 { font-size: 1.8rem; }
-            .card-btn { padding: 20px; }
+        footer {
+            margin-top: 60px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
         }
-
     </style>
 </head>
 <body>
 
-<div class="portal-wrapper">
-    <header>
+<div class="container">
+
+    <div id="home" class="page active">
         <h1>Benjamin’s Portal</h1>
-        <p>Your Gateway to Academic Excellence & Essential Digital Tools</p>
-    </header>
-
-    <div class="content-area">
-        <div id="home" class="page active">
-            <div class="button-grid">
-                <div class="card-btn ven1101" onclick="showPage('ven1101')">
-                    <h2>VEN1101</h2>
-                    <p>Access resources and tools for VEN1101.</p>
-                </div>
-                <div class="card-btn ven2101" onclick="showPage('ven2101')">
-                    <h2>VEN2101</h2>
-                    <p>Discover materials and guides for VEN2101.</p>
-                </div>
-                <div class="card-btn digital-tools" onclick="showPage('digital-tools')">
-                    <h2>Digital Tools</h2>
-                    <p>Explore useful tools for productivity and assessments.</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="ven1101" class="page">
-            <div class="back-btn" onclick="showPage('home')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                Back to Portal
-            </div>
-            <h2>VEN1101</h2>
-            <div class="button-grid">
-                <a href="https://benjaminl-ai.github.io/pronunciation/" class="card-btn" target="_blank">
-                    <h3>AI Speaking Coach</h3>
-                    <p>Practice your pronunciation with intelligent feedback.</p>
-                </a>
-                <a href="https://benjaminl-ai.github.io/ven1101ta/" class="card-btn" target="_blank">
-                    <h3>TA Challenge (Revision Package)</h3>
-                    <p>Comprehensive revision materials for your assessments.</p>
-                </a>
-                <a href="https://benjaminl-ai.github.io/ven1101ta-rev/" class="card-btn" target="_blank">
-                    <h3>TA Game Boy (Action Verbs)</h3>
-                    <p>An interactive game to master action verbs.</p>
-                </a>
-                <a href="https://benjaminl-ai.github.io/ven1101prep-bse/" class="card-btn" target="_blank">
-                    <h3>TA Prep Task Helper - BSE</h3>
-                    <p>Dedicated preparation tasks for BSE students.</p>
-                </a>
-                <a href="https://benjaminl-ai.github.io/ven1101taprep/" class="card-btn" target="_blank">
-                    <h3>TA Prep Task Helper - Fashion</h3>
-                    <p>Tailored preparation tasks for Fashion students.</p>
-                </a>
-            </div>
-        </div>
-
-        <div id="ven2101" class="page">
-            <div class="back-btn" onclick="showPage('home')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                Back to Portal
-            </div>
-            <h2>VEN2101</h2>
-            <div class="button-grid">
-                <a href="https://benjaminl-ai.github.io/pronunciation/" class="card-btn" target="_blank">
-                    <h3>AI Speaking Coach</h3>
-                    <p>Advanced speaking practice and coaching.</p>
-                </a>
-                <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="card-btn" target="_blank">
-                    <h3>Vocab Shooting Game (TA Vocab List)</h3>
-                    <p>Enhance your vocabulary through an engaging game.</p>
-                </a>
-                <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="card-btn" target="_blank">
-                    <h3>TA Prep Task Helper</h3>
-                    <p>Key preparation tasks for VEN2101 assessments.</p>
-                </a>
-            </div>
-        </div>
-
-        <div id="digital-tools" class="page">
-            <div class="back-btn" onclick="showPage('home')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                Back to Portal
-            </div>
-            <h2>Digital Tools</h2>
-            <div class="button-grid">
-                <div class="card-btn disabled" onclick="alert('Coming soon!')">
-                    <h3>Assessment Timer</h3>
-                    <p>A handy timer for managing in-class assessments.</p>
-                </div>
-                <div class="card-btn disabled" onclick="alert('Coming soon!')">
-                    <h3>VEN1101 TA scheduler</h3>
-                    <p>Simplify scheduling for your VEN1101 TA sessions.</p>
-                </div>
-                <div class="card-btn disabled" onclick="alert('Coming soon!')">
-                    <h3>File Renamer</h3>
-                    <p>Efficiently batch rename your assessment files.</p>
-                </div>
-                <div class="card-btn disabled" onclick="alert('Coming soon!')">
-                    <h3>Cover Source (for assessment arrangement)</h3>
-                    <p>Streamline the arrangement of your assessment covers.</p>
-                </div>
-            </div>
+        <div class="grid">
+            <div class="btn" onclick="showPage('ven1101')">VEN1101</div>
+            <div class="btn" onclick="showPage('ven2101')">VEN2101</div>
+            <div class="btn" onclick="showPage('digital-tools')">Digital Tools</div>
         </div>
     </div>
+
+    <div id="ven1101" class="page">
+        <div class="back-btn" onclick="showPage('home')">BACK</div>
+        <h1>VEN1101</h1>
+        <div class="grid">
+            <a href="https://benjaminl-ai.github.io/pronunciation/" class="btn" target="_blank">AI Speaking Coach</a>
+            <a href="https://benjaminl-ai.github.io/ven1101ta/" class="btn" target="_blank">TA Challenge (Revision Package)</a>
+            <a href="https://benjaminl-ai.github.io/ven1101ta-rev/" class="btn" target="_blank">TA Game Boy (Action Verbs)</a>
+            <a href="https://benjaminl-ai.github.io/ven1101prep-bse/" class="btn" target="_blank">TA Prep Task Helper - BSE</a>
+            <a href="https://benjaminl-ai.github.io/ven1101taprep/" class="btn" target="_blank">TA Prep Task Helper - Fashion</a>
+        </div>
+    </div>
+
+    <div id="ven2101" class="page">
+        <div class="back-btn" onclick="showPage('home')">BACK</div>
+        <h1>VEN2101</h1>
+        <div class="grid">
+            <a href="https://benjaminl-ai.github.io/pronunciation/" class="btn btn-ven2101" target="_blank">AI Speaking Coach</a>
+            <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="btn btn-ven2101" target="_blank">Vocab Shooting Game (TA Vocab List)</a>
+            <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="btn btn-ven2101" target="_blank">TA Prep Task Helper</a>
+        </div>
+    </div>
+
+    <div id="digital-tools" class="page">
+        <div class="back-btn" onclick="showPage('home')">BACK</div>
+        <h1>Digital Tools</h1>
+        <div class="grid">
+            <div class="btn btn-tool" onclick="alert('Coming soon')">Assessment Timer</div>
+            <div class="btn btn-tool" onclick="alert('Coming soon')">VEN1101 TA scheduler</div>
+            <div class="btn btn-tool" onclick="alert('Coming soon')">File Renamer</div>
+            <div class="btn btn-tool" onclick="alert('Coming soon')">Cover Source (for assessment arrangement)</div>
+        </div>
+    </div>
+
+    <footer>EST. 2026</footer>
 </div>
 
 <script>
-    // Function to show/hide pages
     function showPage(pageId) {
         const pages = document.querySelectorAll('.page');
-        pages.forEach(page => page.classList.remove('active')); // Hide all pages
-
-        const targetPage = document.getElementById(pageId);
-        if (targetPage) {
-            targetPage.classList.add('active'); // Show target page
-            window.scrollTo(0, 0); // Scroll to top
-        }
+        pages.forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0, 0);
     }
 </script>
 
