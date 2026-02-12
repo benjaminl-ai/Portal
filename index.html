@@ -6,67 +6,69 @@
     <title>Benjamin’s Portal</title>
     <style>
         :root {
-            --bg-dark: #0a0f1a; 
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --accent-blue: #00d2ff;
-            --accent-green: #00ff87;
-            --text-main: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.5);
-            --border: rgba(255, 255, 255, 0.1);
-            --transition-speed: 0.5s; /* Dissolve 速度 */
+            --bg-color: #f9f8f4; /* 傳統和紙色 */
+            --text-main: #333333; /* 墨灰色 */
+            --text-dim: #888888;
+            --accent: #a68d71; /* 橡木色 / 灰褐色 */
+            --border: #e0ddd5;
+            --transition-speed: 0.6s;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
-            background-color: var(--bg-dark);
+            font-family: "Helvetica Neue", "Helvetica", "Nimbus Sans L", Arial, "Liberation Sans", "PingFang HK", "Hiragino Sans GB", "Source Han Sans TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* 科技背景微光 */
-        body::after {
+        /* 裝飾性線條 - 模仿屏風或日式建築 */
+        body::before {
             content: "";
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% -20%, rgba(0, 210, 255, 0.15), transparent 80%);
+            top: 0; left: 50%;
+            width: 1px;
+            height: 100%;
+            background-color: var(--border);
             z-index: -1;
-            pointer-events: none;
+            opacity: 0.5;
         }
 
         .container {
-            width: 90%;
-            max-width: 450px;
-            padding: 80px 0;
+            width: 85%;
+            max-width: 400px;
+            padding: 100px 0;
             position: relative;
         }
 
         h1 {
-            font-size: 1.8rem;
-            font-weight: 200;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 50px;
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 0.2rem;
             text-align: center;
-            background: linear-gradient(to bottom, #fff, #666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 80px;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--accent);
+            display: inline-block;
+            left: 50%;
+            position: relative;
+            transform: translateX(-50%);
+            padding-bottom: 10px;
         }
 
-        /* Dissolve (溶解) 切換效果 */
+        /* Dissolve (溶解) 切換 */
         .page {
             position: absolute;
-            top: 80px;
+            top: 100px;
             left: 0;
             right: 0;
             opacity: 0;
             visibility: hidden;
-            transition: opacity var(--transition-speed) ease, visibility var(--transition-speed);
+            transition: opacity var(--transition-speed) ease-in-out;
             pointer-events: none;
         }
 
@@ -83,64 +85,58 @@
             text-align: center;
             color: var(--text-dim);
             text-decoration: none;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
+            font-size: 0.75rem;
+            letter-spacing: 0.1rem;
+            margin-bottom: 50px;
             cursor: pointer;
             transition: 0.3s;
         }
-        .back-btn:hover { color: var(--accent-blue); }
+        .back-btn:hover { color: var(--accent); }
 
-        .grid { display: grid; gap: 12px; }
+        .grid { display: grid; gap: 20px; }
 
-        /* 按鈕基礎樣式 */
+        /* 按鈕樣式：極簡線條 */
         .btn {
             display: block;
-            padding: 24px;
-            background: var(--card-bg);
+            padding: 20px;
+            background: transparent;
             color: var(--text-main);
             text-decoration: none;
-            border-radius: 4px; /* 較銳利的直角更顯專業 */
             border: 1px solid var(--border);
             font-size: 0.9rem;
-            font-weight: 300;
-            letter-spacing: 1px;
+            font-weight: 400;
             text-align: center;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             cursor: pointer;
             outline: none;
         }
 
-        /* Hover 狀態 */
+        /* Hover 效果：輕微變色與位移 */
         .btn:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.1);
+            border-color: var(--accent);
+            background-color: #ffffff;
+            letter-spacing: 1px;
         }
 
-        /* 撳掣瞬間反應 (Active State) */
+        /* 撳掣瞬間反應：縮小與壓感 */
         .btn:active {
-            transform: scale(0.97);
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--accent-blue);
-            transition: transform 0.1s;
+            transform: scale(0.98);
+            background-color: #f2f0e9;
         }
 
-        /* 課程特定色 */
-        .btn-ven2101:active { border-color: var(--accent-green); }
-        
         .btn-tool {
-            border-style: dotted;
-            color: var(--text-dim);
+            border-style: solid;
+            opacity: 0.4;
+            font-style: italic;
         }
 
         footer {
-            margin-top: 100px;
+            margin-top: 120px;
             text-align: center;
-            font-size: 0.6rem;
-            color: rgba(255,255,255,0.2);
-            letter-spacing: 3px;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -149,16 +145,16 @@
 <div class="container">
 
     <div id="home" class="page active">
-        <h1>Benjamin’s Portal</h1>
+        <h1>BENJAMIN'S PORTAL</h1>
         <div class="grid">
             <div class="btn" onclick="showPage('ven1101')">VEN1101</div>
             <div class="btn" onclick="showPage('ven2101')">VEN2101</div>
-            <div class="btn" onclick="showPage('digital-tools')">Digital Tools</div>
+            <div class="btn" onclick="showPage('digital-tools')">DIGITAL TOOLS</div>
         </div>
     </div>
 
     <div id="ven1101" class="page">
-        <div class="back-btn" onclick="showPage('home')">// RETURN TO INDEX //</div>
+        <div class="back-btn" onclick="showPage('home')">戻る / BACK</div>
         <h1>VEN1101</h1>
         <div class="grid">
             <a href="https://benjaminl-ai.github.io/pronunciation/" class="btn" target="_blank">AI Speaking Coach</a>
@@ -170,38 +166,36 @@
     </div>
 
     <div id="ven2101" class="page">
-        <div class="back-btn" onclick="showPage('home')">// RETURN TO INDEX //</div>
+        <div class="back-btn" onclick="showPage('home')">戻る / BACK</div>
         <h1>VEN2101</h1>
         <div class="grid">
-            <a href="https://benjaminl-ai.github.io/pronunciation/" class="btn btn-ven2101" target="_blank">AI Speaking Coach</a>
-            <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="btn btn-ven2101" target="_blank">Vocab Shooting Game (TA Vocab List)</a>
-            <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="btn btn-ven2101" target="_blank">TA Prep Task Helper</a>
+            <a href="https://benjaminl-ai.github.io/pronunciation/" class="btn" target="_blank">AI Speaking Coach</a>
+            <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="btn" target="_blank">Vocab Shooting Game (TA Vocab List)</a>
+            <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="btn" target="_blank">TA Prep Task Helper</a>
         </div>
     </div>
 
     <div id="digital-tools" class="page">
-        <div class="back-btn" onclick="showPage('home')">// RETURN TO INDEX //</div>
-        <h1>Digital Tools</h1>
+        <div class="back-btn" onclick="showPage('home')">戻る / BACK</div>
+        <h1>DIGITAL TOOLS</h1>
         <div class="grid">
-            <div class="btn btn-tool" onclick="alert('Access Restricted: Coming Soon')">Assessment Timer</div>
-            <div class="btn btn-tool" onclick="alert('Access Restricted: Coming Soon')">VEN1101 TA scheduler</div>
-            <div class="btn btn-tool" onclick="alert('Access Restricted: Coming Soon')">File Renamer</div>
-            <div class="btn btn-tool" onclick="alert('Access Restricted: Coming Soon')">Cover Source (for assessment arrangement)</div>
+            <div class="btn btn-tool" onclick="alert('Coming soon')">Assessment Timer</div>
+            <div class="btn btn-tool" onclick="alert('Coming soon')">VEN1101 TA scheduler</div>
+            <div class="btn btn-tool" onclick="alert('Coming soon')">File Renamer</div>
+            <div class="btn btn-tool" onclick="alert('Coming soon')">Cover Source (for assessment arrangement)</div>
         </div>
     </div>
 
-    <footer>CORE SYSTEM V2.0 // 2026</footer>
+    <footer>— SINCE 2026 —</footer>
 </div>
 
 <script>
     function showPage(pageId) {
-        // 先將所有頁面設為不活動
         const pages = document.querySelectorAll('.page');
         pages.forEach(p => {
             p.classList.remove('active');
         });
         
-        // 延遲極短時間再顯示新頁面，確保 Dissolve 效果流暢
         setTimeout(() => {
             const target = document.getElementById(pageId);
             target.classList.add('active');
