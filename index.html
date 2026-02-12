@@ -9,6 +9,10 @@
             --ios-radius: 18px;
             --folder-bg: rgba(255, 255, 255, 0.25);
             --blur: blur(30px);
+            /* App Colors */
+            --v1-color: linear-gradient(135deg, #5AC8FA 0%, #007AFF 100%);
+            --v2-color: linear-gradient(135deg, #4CD964 0%, #28CD41 100%);
+            --tool-color: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -20,10 +24,8 @@
             background: #000;
         }
 
-        /* iPhone 漸變背景 */
         .wallpaper {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(145deg, #1e3c72 0%, #2a5298 20%, #7028e4 60%, #e5b2ca 100%);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -50,9 +52,7 @@
         }
 
         .home-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px 15px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px 15px;
         }
 
         .item-wrapper {
@@ -67,14 +67,19 @@
             position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
+        /* Folder 預覽縮圖 - 3x3 整齊排列 */
         .folder-icon {
             background: var(--folder-bg);
             backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
             display: grid; grid-template-columns: repeat(3, 1fr);
-            padding: 10px; gap: 4px;
+            padding: 12px; gap: 5px;
         }
 
-        .mini-dot { background: rgba(255, 255, 255, 0.5); border-radius: 4px; aspect-ratio: 1; }
+        .mini-dot { border-radius: 3px; aspect-ratio: 1; }
+        .dot-v1 { background: var(--v1-color); }
+        .dot-v2 { background: var(--v2-color); }
+        .dot-tool { background: var(--tool-color); }
+        .dot-empty { background: rgba(255, 255, 255, 0.1); }
 
         .label {
             margin-top: 6px; font-size: 11px; color: white; font-weight: 400;
@@ -85,7 +90,7 @@
 
         .item-wrapper:active .icon-shape { transform: scale(0.85); }
 
-        /* Folder 視圖 */
+        /* Folder View */
         .folder-view {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.3);
@@ -106,13 +111,10 @@
 
         .folder-title { color: white; font-size: 26px; font-weight: 600; margin-bottom: 25px; }
 
-        .app-icon {
-            color: white; font-weight: 800; font-size: 18px; text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .icon-v1 { background: linear-gradient(135deg, #5AC8FA 0%, #007AFF 100%); }
-        .icon-v2 { background: linear-gradient(135deg, #4CD964 0%, #28CD41 100%); }
-        .icon-tool { background: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%); }
+        .app-icon { color: white; font-weight: 800; font-size: 18px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .icon-v1 { background: var(--v1-color); }
+        .icon-v2 { background: var(--v2-color); }
+        .icon-tool { background: var(--tool-color); }
 
         .close-area { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
     </style>
@@ -132,25 +134,27 @@
     <div class="home-grid">
         <div class="item-wrapper" onclick="openFolder('f-ven1101')">
             <div class="icon-shape folder-icon">
-                <div class="mini-dot"></div><div class="mini-dot"></div><div class="mini-dot"></div>
-                <div class="mini-dot"></div><div class="mini-dot"></div><div class="mini-dot"></div>
-                <div class="mini-dot"></div><div class="mini-dot"></div><div class="mini-dot"></div>
+                <div class="mini-dot dot-v1"></div><div class="mini-dot dot-v1"></div><div class="mini-dot dot-v1"></div>
+                <div class="mini-dot dot-v1"></div><div class="mini-dot dot-v1"></div><div class="mini-dot dot-empty"></div>
+                <div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div>
             </div>
             <div class="label">VEN1101</div>
         </div>
 
         <div class="item-wrapper" onclick="openFolder('f-ven2101')">
             <div class="icon-shape folder-icon">
-                <div class="mini-dot"></div><div class="mini-dot"></div><div class="mini-dot"></div>
-                <div class="mini-dot"></div><div class="mini-dot"></div>
+                <div class="mini-dot dot-v2"></div><div class="mini-dot dot-v2"></div><div class="mini-dot dot-v2"></div>
+                <div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div>
+                <div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div>
             </div>
             <div class="label">VEN2101</div>
         </div>
 
         <div class="item-wrapper" onclick="openFolder('f-tools')">
             <div class="icon-shape folder-icon">
-                <div class="mini-dot"></div><div class="mini-dot"></div>
-                <div class="mini-dot"></div><div class="mini-dot"></div>
+                <div class="mini-dot dot-tool"></div><div class="mini-dot dot-tool"></div><div class="mini-dot dot-tool"></div>
+                <div class="mini-dot dot-tool"></div><div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div>
+                <div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div><div class="mini-dot dot-empty"></div>
             </div>
             <div class="label">Digital Tools</div>
         </div>
@@ -161,26 +165,11 @@
     <div class="close-area"></div>
     <div class="folder-title">VEN1101</div>
     <div class="folder-content" onclick="event.stopPropagation()">
-        <a href="https://benjaminl-ai.github.io/pronunciation/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v1">AI</div>
-            <div class="label">AI Speaking Coach</div>
-        </a>
-        <a href="https://benjaminl-ai.github.io/ven1101ta/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v1">TA</div>
-            <div class="label">TA Challenge (Revision Package)</div>
-        </a>
-        <a href="https://benjaminl-ai.github.io/ven1101ta-rev/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v1">GB</div>
-            <div class="label">TA Game Boy (Action Verbs)</div>
-        </a>
-        <a href="https://benjaminl-ai.github.io/ven1101prep-bse/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v1">BSE</div>
-            <div class="label">TA Prep Task Helper - BSE</div>
-        </a>
-        <a href="https://benjaminl-ai.github.io/ven1101taprep/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v1">FSH</div>
-            <div class="label">TA Prep Task Helper - Fashion</div>
-        </a>
+        <a href="https://benjaminl-ai.github.io/pronunciation/" class="item-wrapper" target="_blank"><div class="icon-shape app-icon icon-v1">AI</div><div class="label">AI Speaking Coach</div></a>
+        <a href="https://benjaminl-ai.github.io/ven1101ta/" class="item-wrapper" target="_blank"><div class="icon-shape app-icon icon-v1">TA</div><div class="label">TA Challenge (Revision Package)</div></a>
+        <a href="https://benjaminl-ai.github.io/ven1101ta-rev/" class="item-wrapper" target="_blank"><div class="icon-shape app-icon icon-v1">GB</div><div class="label">TA Game Boy (Action Verbs)</div></a>
+        <a href="https://benjaminl-ai.github.io/ven1101prep-bse/" class="item-wrapper" target="_blank"><div class="icon-shape app-icon icon-v1">BSE</div><div class="label">TA Prep Task Helper - BSE</div></a>
+        <a href="https://benjaminl-ai.github.io/ven1101taprep/" class="item-wrapper" target="_blank"><div class="icon-shape app-icon icon-v1">FSH</div><div class="label">TA Prep Task Helper - Fashion</div></a>
     </div>
 </div>
 
@@ -188,18 +177,9 @@
     <div class="close-area"></div>
     <div class="folder-title">VEN2101</div>
     <div class="folder-content" onclick="event.stopPropagation()">
-        <a href="https://benjaminl-ai.github.io/pronunciation/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v2">AI</div>
-            <div class="label">AI Speaking Coach</div>
-        </a>
-        <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v2">VG</div>
-            <div class="label">Vocab Shooting Game (TA Vocab List)</div>
-        </a>
-        <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="item-wrapper" target="_blank">
-            <div class="icon-shape app-icon icon-v2">TA</div>
-            <div class="label">TA Prep Task Helper</div>
-        </a>
+        <a href="https://benjaminl-ai.github.io/pronunciation/" class="item-wrapper" target="_blank"><div class="icon-shape app-icon icon-v2">AI</div><div class="label">AI Speaking Coach</div></a>
+        <a href="https://benjaminl-ai.github.io/ven2101vocab/" class="item-wrapper" target="_blank"><div class="icon-shape app-icon icon-v2">VG</div><div class="label">Vocab Shooting Game (TA Vocab List)</div></a>
+        <a href="https://benjaminl-ai.github.io/ven2101taprep/" class="item-wrapper" target="_blank"><div class="icon-shape app-icon icon-v2">TA</div><div class="label">TA Prep Task Helper</div></a>
     </div>
 </div>
 
@@ -207,22 +187,10 @@
     <div class="close-area"></div>
     <div class="folder-title">Digital Tools</div>
     <div class="folder-content" onclick="event.stopPropagation()">
-        <div class="item-wrapper" onclick="alert('Coming soon')">
-            <div class="icon-shape app-icon icon-tool">CS</div>
-            <div class="label">Cover Source</div>
-        </div>
-        <div class="item-wrapper" onclick="alert('Coming soon')">
-            <div class="icon-shape app-icon icon-tool">TM</div>
-            <div class="label">Assessment Timer</div>
-        </div>
-        <div class="item-wrapper" onclick="alert('Coming soon')">
-            <div class="icon-shape app-icon icon-tool">SC</div>
-            <div class="label">VEN1101 TA scheduler</div>
-        </div>
-        <div class="item-wrapper" onclick="alert('Coming soon')">
-            <div class="icon-shape app-icon icon-tool">RN</div>
-            <div class="label">File Renamer</div>
-        </div>
+        <div class="item-wrapper" onclick="alert('Coming soon')"><div class="icon-shape app-icon icon-tool">CS</div><div class="label">Cover Source</div></div>
+        <div class="item-wrapper" onclick="alert('Coming soon')"><div class="icon-shape app-icon icon-tool">TM</div><div class="label">Assessment Timer</div></div>
+        <div class="item-wrapper" onclick="alert('Coming soon')"><div class="icon-shape app-icon icon-tool">SC</div><div class="label">VEN1101 TA scheduler</div></div>
+        <div class="item-wrapper" onclick="alert('Coming soon')"><div class="icon-shape app-icon icon-tool">RN</div><div class="label">File Renamer</div></div>
     </div>
 </div>
 
@@ -232,7 +200,6 @@
         el.style.display = 'flex';
         setTimeout(() => el.classList.add('active'), 10);
     }
-
     function closeFolder() {
         const folders = document.querySelectorAll('.folder-view');
         folders.forEach(f => {
